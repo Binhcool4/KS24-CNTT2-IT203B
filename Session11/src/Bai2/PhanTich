@@ -1,0 +1,9 @@
+Tại sao lệnh if không đủ?
+Lệnh if (rs.next()) chỉ kiểm tra và di chuyển con trỏ xuống dòng đầu tiên của kết quả trả về. Sau khi thực hiện xong khối lệnh bên trong if, chương trình sẽ thoát ra ngoài.
+Vì vậy, dù bảng Pharmacy có 100 loại thuốc, nó cũng chỉ in ra duy nhất loại thuốc ở dòng đầu tiên rồi dừng lại.
+
+Sự thay đổi của con trỏ ResultSet:
+Ban đầu, con trỏ nằm ở vị trí BeforeFirst (trước dòng dữ liệu đầu tiên).
+Mỗi khi gọi next(), con trỏ sẽ dịch chuyển xuống một dòng tiếp theo.
+Nếu dòng đó có dữ liệu, next() trả về true. Nếu đã hết dữ liệu, nó trả về false.
+Do đó, để "vét sạch" dữ liệu, ta cần một vòng lặp liên tục gọi next() cho đến khi nó trả về false.

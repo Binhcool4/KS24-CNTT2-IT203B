@@ -1,0 +1,10 @@
+uồng thực thi sau khi nối chuỗi:
+Khi hacker nhập vào ô tìm kiếm chuỗi: ' OR '1'='1, câu lệnh SQL trong Java sẽ được hình thành như sau:
+SELECT * FROM Patients WHERE full_name = '' OR '1'='1'
+
+Tại sao mệnh đề WHERE lại luôn đúng?
+Câu lệnh này được chia làm hai vế bởi toán tử OR.
+Vế 1: full_name = '' (Có thể sai).
+Vế 2: '1'='1' (Đây là một hằng số, luôn luôn đúng - True).
+Trong logic toán học: (Sai) OR (Đúng) kết quả luôn là Đúng.
+Hệ thống sẽ hiểu là: "Hãy lấy tất cả bệnh nhân có tên rỗng HOẶC bất cứ bệnh nhân nào mà 1 bằng 1". Vì 1 luôn bằng 1, nên toàn bộ dữ liệu trong bảng Patients sẽ bị "phơi bày" ra ngoài.

@@ -1,0 +1,7 @@
+Ý nghĩa giá trị trả về của executeUpdate():
+Phương thức executeUpdate() trả về một số nguyên (int).
+Giá trị này đại diện cho số lượng dòng (rows) bị tác động trong cơ sở dữ liệu bởi câu lệnh SQL đó.
+
+Cách dùng để phản hồi cho y tá:
+Khi thực hiện lệnh UPDATE cho một bed_id không tồn tại, MySQL vẫn coi đó là một lệnh hợp lệ (không sai cú pháp) nên không báo lỗi SQLException. Tuy nhiên, vì không tìm thấy dòng nào thỏa mãn điều kiện WHERE, số dòng bị tác động sẽ là 0.
+Để phản hồi chính xác, ta chỉ cần kiểm tra: Nếu kết quả trả về bằng 0, nghĩa là mã giường không tồn tại hoặc không có thay đổi nào được thực hiện.

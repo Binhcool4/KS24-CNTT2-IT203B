@@ -1,0 +1,4 @@
+Việc khởi tạo kết nối liên tục mà không đóng (Close) hoặc quản lý tập trung gây ra các hệ lụy nghiêm trọng:
+Cạn kiệt Connection Pool
+Rò rỉ bộ nhớ (Memory Leak)
+n toàn dữ liệu
