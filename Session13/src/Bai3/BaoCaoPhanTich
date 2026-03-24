@@ -1,0 +1,68 @@
+PHẦN 1. PHÂN TÍCH BÀI TOÁN
+1.Input / Output
+
+Input:
+-maBenhNhan (int): mã bệnh nhân cần xuất viện
+-tienVienPhi (double): số tiền viện phí cần thanh toán
+
+Output:
+-Trường hợp thành công: thông báo "Xuất viện và thanh toán thành công"
+-Trường hợp thất bại:
+    "Không đủ tiền" nếu số dư không đủ
+    "Bệnh nhân không tồn tại" nếu không tìm thấy dữ liệu
+    "Thất bại: ..." nếu có lỗi hệ thống
+2.Đề xuất giải pháp
+
+-Bài toán yêu cầu thực hiện 3 thao tác liên tiếp trên cơ sở dữ liệu gồm:
+    Trừ tiền trong ví bệnh nhân
+    Giải phóng giường bệnh
+    Cập nhật trạng thái bệnh nhân
+
+->Đây là một transaction nên cần đảm bảo tính nguyên tử (Atomicity), tức là hoặc tất cả thao tác
+đều thành công, hoặc không có thao tác nào được lưu lại.
+
+Giải pháp:
+
+Sử dụng Connection trong JDBC
+Tắt chế độ AutoCommit
+Thực hiện lần lượt các câu lệnh SQL
+Nếu tất cả thành công thì gọi commit()
+Nếu có bất kỳ lỗi nào xảy ra thì gọi rollback() để khôi phục dữ liệu
+
+Xử lý các bẫy:
+
+-Bẫy 1 (thiếu tiền): trước khi trừ tiền phải kiểm tra số dư, nếu không đủ thì ném Exception để
+dừng transaction
+-Bẫy 2 (row affected = 0): kiểm tra kết quả executeUpdate(), nếu bằng 0 thì chủ động ném
+Exception để rollback
+
+3.Các bước xử lý
+-Bước 1: Mở kết nối database
+-Bước 2: Tắt AutoCommit
+-Bước 3: Truy vấn số dư của bệnh nhân
+-Bước 4: Kiểm tra bệnh nhân có tồn tại không
+-Bước 5: Kiểm tra số dư có đủ thanh toán không
+-Bước 6: Thực hiện trừ tiền
+-Bước 7: Kiểm tra số dòng bị ảnh hưởng (row affected)
+-Bước 8: Cập nhật trạng thái giường
+-Bước 9: Kiểm tra row affected
+-Bước 10: Cập nhật trạng thái bệnh nhân
+-Bước 11: Kiểm tra row affected
+-Bước 12: Nếu tất cả thành công thì commit
+-Bước 13: Nếu có lỗi thì rollback
+-Bước 14: Đóng kết nối
+PHẦN 2. TRIỂN KHAI VÀ CHỐNG LỖI
+
+Hệ thống sử dụng transaction trong JDBC để đảm bảo tính toàn vẹn dữ liệu. Khi xảy ra lỗi ở bất kỳ bước nào,
+chương trình sẽ ném ra Exception và thực hiện rollback để đưa dữ liệu về trạng thái ban đầu.
+
+Các điểm quan trọng trong xử lý:
+
+-Sử dụng conn.setAutoCommit(false) để bắt đầu transaction
+-Sử dụng conn.commit() khi tất cả thao tác thành công
+-Sử dụng conn.rollback() trong khối catch để xử lý lỗi
+-Kiểm tra dữ liệu đầu vào (số dư) để tránh lỗi nghiệp vụ
+-Kiểm tra row affected để phát hiện lỗi dữ liệu không tồn tại
+
+Cách tiếp cận này giúp đảm bảo hệ thống luôn nhất quán, tránh các trường hợp dữ liệu bị cập nhật một
+phần gây sai lệch thông tin giữa các bảng.

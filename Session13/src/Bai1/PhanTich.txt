@@ -1,0 +1,9 @@
+    Trong JDBC, mặc định chế độ Auto-Commit được bật (Auto-Commit = true), nghĩa là mỗi
+câu lệnh SQL khi thực thi sẽ được commit ngay lập tức xuống cơ sở dữ liệu. Trong đoạn
+code ban đầu, sau khi câu lệnh cập nhật số lượng thuốc trong kho được thực hiện, dữ liệu
+đã được lưu vĩnh viễn. Khi xảy ra lỗi ở giữa chương trình (ví dụ lỗi chia cho 0), chương
+trình bị dừng lại trước khi thực hiện câu lệnh ghi lịch sử cấp phát thuốc. Do câu lệnh đầu
+tiên đã được commit nên không thể rollback lại, dẫn đến tình trạng dữ liệu bị sai lệch: thuốc
+đã bị trừ nhưng không có bản ghi lịch sử tương ứng. Nguyên nhân là do hai thao tác này không
+được đặt trong cùng một transaction, làm vi phạm tính nguyên tử (Atomicity), vốn yêu cầu các
+thao tác phải thành công hoặc thất bại cùng nhau.

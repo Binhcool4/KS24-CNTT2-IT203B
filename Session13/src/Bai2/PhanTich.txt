@@ -1,0 +1,11 @@
+    Trong xử lý transaction, khi đã tắt Auto-Commit (setAutoCommit(false)), mọi thay
+đổi trên cơ sở dữ liệu sẽ chỉ được lưu vĩnh viễn khi có lệnh commit(). Nếu xảy ra lỗi trong
+quá trình thực hiện các thao tác mà không gọi rollback(), transaction sẽ rơi vào trạng thái
+chưa hoàn tất (dangling transaction). Việc chỉ sử dụng System.out.println() để in ra lỗi mà
+không thực hiện rollback() là vi phạm nguyên tắc đảm bảo tính nhất quán (Consistency) và
+nguyên tử (Atomicity) của transaction. Khi đó, các thay đổi trước đó (ví dụ như trừ tiền
+trong ví) vẫn đang nằm trong transaction chưa được commit hoặc rollback, giữ lock trên dữ
+liệu và có thể gây ra hiện tượng treo kết nối, ảnh hưởng đến các giao dịch khác. Hành động
+thiết yếu mà lập trình viên đã bỏ quên là gọi phương thức rollback() để hủy bỏ toàn bộ các
+thay đổi đã thực hiện trong transaction, đưa cơ sở dữ liệu về trạng thái an toàn trước khi
+xảy ra lỗi.
