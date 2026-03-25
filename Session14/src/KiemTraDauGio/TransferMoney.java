@@ -3,7 +3,7 @@ package KiemTraDauGio;
 import java.sql.*;
 
 public class TransferMoney {
-    private static final String URL = "jdbc:sqlserver://localhost:3036;session14?createDatabaseIfNotExist=true";
+    private static final String URL = "jdbc:mysql://localhost:3306/session14?createDatabaseIfNotExist=true";
     private static final String USER = "root";
     private static final String PASSWORD = "123456#";
 
